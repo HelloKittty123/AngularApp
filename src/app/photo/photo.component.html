@@ -1,0 +1,35 @@
+<div class="container">
+  <div
+    *ngIf="loadingStatus === 0; else loading"
+    style="
+      height: 100%;
+      display: flex;
+      row-gap: 30px;
+      column-gap: 50px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 20px;
+    "
+  >
+    <div *ngIf="photos.length === 0">No photo in this albums</div>
+
+    <mat-card class="photo-card" *ngFor="let photo of photos">
+      <mat-card-header>
+        <mat-card-title>{{ photo.title }}</mat-card-title>
+      </mat-card-header>
+      <img mat-card-image src="{{ photo.url }}" alt="Photo" />
+      <mat-card-content>
+        <p>
+          {{ photo.thumbnailUrl }}
+        </p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+
+<ng-template #loading>
+  <div class="loading">
+    <mat-spinner></mat-spinner>
+    <span> Loading... </span>
+  </div>
+</ng-template>

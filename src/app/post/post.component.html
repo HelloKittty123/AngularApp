@@ -1,0 +1,37 @@
+<div class="container">
+  <div *ngIf="loadingStatus === 0; else loading">
+    <div *ngIf="posts.length === 0">No posts</div>
+    <mat-card
+      *ngFor="let post of posts"
+      routerLink="{{ post.id }}/comments"
+      class="wrap"
+    >
+      <mat-card-header>
+        <mat-card-title>{{ post.title }}</mat-card-title>
+        <mat-card-subtitle>
+          {{ post.body }}
+        </mat-card-subtitle>
+      </mat-card-header>
+    </mat-card>
+    <mat-paginator
+      *ngIf="posts.length > 0"
+      #paginator
+      class="demo-paginator"
+      (page)="handlePageEvent($event)"
+      [length]="100"
+      [pageIndex]="pageIndex"
+      [pageSize]="10"
+      [showFirstLastButtons]="true"
+      [hidePageSize]="true"
+      aria-label="Select page"
+    >
+    </mat-paginator>
+  </div>
+</div>
+
+<ng-template #loading>
+  <div class="loading">
+    <mat-spinner></mat-spinner>
+    <span> Loading... </span>
+  </div>
+</ng-template>

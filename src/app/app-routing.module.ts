@@ -1,10 +1,39 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-const routes: Routes = [];
+const routes: Routes = [
+  {
+    path: 'post',
+    loadChildren: () => import('./post/post.module').then((m) => m.PostModule),
+  },
+  {
+    path: 'album',
+    loadChildren: () =>
+      import('./album/album.module').then((m) => m.AlbumModule),
+  },
+  {
+    path: 'user',
+    loadChildren: () => import('./user/user.module').then((m) => m.UserModule),
+  },
+  {
+    path: '',
+    redirectTo: 'post',
+    pathMatch: 'full',
+  },
+  {
+    path: 'comments',
+    loadChildren: () =>
+      import('./comments/comments.module').then((m) => m.CommentsModule),
+  },
+  {
+    path: 'photo',
+    loadChildren: () =>
+      import('./photo/photo.module').then((m) => m.PhotoModule),
+  },
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

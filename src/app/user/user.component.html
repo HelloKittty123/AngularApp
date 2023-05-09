@@ -1,0 +1,65 @@
+<div class="container">
+  <div *ngIf="loadingStatus === 0; else loading">
+    <div *ngIf="users.length === 0; else table">No user</div>
+  </div>
+</div>
+
+<ng-template #loading>
+  <div class="loading">
+    <mat-spinner></mat-spinner>
+    <span> Loading... </span>
+  </div>
+</ng-template>
+
+<ng-template #table>
+  <div class="mat-elevation-z8 wrapper">
+    <table mat-table [dataSource]="users" class="mat-elevation-z8">
+      <!--- Note that these columns can be defined in any order.
+              The actual rendered columns are set as a property on the row definition" -->
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef>No.</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.id }}
+        </td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Name</th>
+        <td mat-cell *matCellDef="let element">
+          <span class="column-name">
+            {{ element.name }}
+          </span>
+        </td>
+      </ng-container>
+      <!-- Email Column -->
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef>Email</th>
+        <td mat-cell *matCellDef="let element">{{ element.email }}</td>
+      </ng-container>
+      <!-- Phone Column -->
+      <ng-container matColumnDef="phone">
+        <th mat-header-cell *matHeaderCellDef>Phone</th>
+        <td mat-cell *matCellDef="let element">{{ element.phone }}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+    <mat-paginator
+      *ngIf="users.length > 0"
+      #paginator
+      class="demo-paginator"
+      (page)="handlePageEvent($event)"
+      [length]="10"
+      [pageIndex]="pageIndex"
+      [pageSize]="10"
+      [showFirstLastButtons]="true"
+      [hidePageSize]="true"
+      aria-label="Select page"
+    >
+    </mat-paginator>
+  </div>
+</ng-template>
