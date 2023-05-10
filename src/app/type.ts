@@ -61,3 +61,9 @@ export interface UserCompany {
   catchPhrase: string;
   bs: string;
 }
+
+export interface Tile {
+  cols: number;
+  rows: number;
+  text: string;
+}

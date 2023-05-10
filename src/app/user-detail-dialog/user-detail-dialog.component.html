@@ -1,1 +1,17 @@
-<p>user-detail-dialog works!</p>
+<h2 mat-dialog-title>{{ data.name }} Information Detail</h2>
+<mat-dialog-content>
+  <mat-grid-list cols="6" rowHeight="50px" style="min-width: 900px">
+    <mat-grid-tile
+      *ngFor="let tile of tiles"
+      [colspan]="tile.cols"
+      [rowspan]="tile.rows"
+    >
+      <div class="mat-content-text">
+        {{ tile.text }}
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+</mat-dialog-actions>

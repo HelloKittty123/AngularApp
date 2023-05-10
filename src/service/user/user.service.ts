@@ -21,4 +21,10 @@ export class UserService {
       .get<User>(`${environment.apiURL}users/${userId}`)
       .pipe(delay(700));
   };
+
+  deleteUser = (userId: number): Observable<User> => {
+    return this.http
+      .delete<User>(`${environment.apiURL}users/${userId}`)
+      .pipe(delay(700));
+  };
 }

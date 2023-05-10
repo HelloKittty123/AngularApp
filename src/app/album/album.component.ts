@@ -23,9 +23,11 @@ export class AlbumComponent implements OnInit {
     this.userService.getUserByPaging(this.pageIndex).subscribe((users) =>
       users.forEach((user) =>
         this.albumService.getAlbumsByUserId(user.id).subscribe((albums) => {
-          this.dataSource = users.map((user) => {
-            return { id: user.id, author: user.name, albums: albums };
-          });
+          this.dataSource = [
+            ...this.dataSource,
+            { id: user.id, author: user.name, albums: albums },
+          ];
+
           this.loadingStatus = 0;
         })
       )

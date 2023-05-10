@@ -17,9 +17,11 @@ export class AppComponent implements DoCheck {
   activeLink!: string;
 
   constructor(private route: ActivatedRoute, private router: Router) {}
+
   ngDoCheck(): void {
-    this.activeLink = this.links.filter((link) =>
-      this.router.url.includes(link.path)
-    )[0].path;
+    if (this.router.url !== '/')
+      this.activeLink = this.links.filter((link) =>
+        this.router.url.includes(link.path)
+      )[0].path;
   }
 }
