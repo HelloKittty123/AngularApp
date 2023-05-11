@@ -12,3 +12,12 @@
 </nav>
 <mat-tab-nav-panel #tabPanel></mat-tab-nav-panel>
 <router-outlet></router-outlet>
+
+<div class="container" *ngIf="loadingStatus">
+  <div class="loading">
+    <mat-spinner></mat-spinner>
+    <span> Loading... </span>
+  </div>
+</div>
+
+<ng-template #loading> </ng-template>

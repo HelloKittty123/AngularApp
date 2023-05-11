@@ -9,6 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class AppComponent implements DoCheck {
   title = 'angularApp';
+  loadingStatus: boolean = false;
   links: RoutePath[] = [
     { title: 'Post', path: 'post' },
     { title: 'Album', path: 'album' },

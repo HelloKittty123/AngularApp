@@ -43,6 +43,10 @@ export interface User {
   company: UserCompany;
 }
 
+// export interface UserUpdate extends User {
+//   isCreate: boolean;
+// }
+
 export interface UserAddress {
   street: string;
   suite: string;

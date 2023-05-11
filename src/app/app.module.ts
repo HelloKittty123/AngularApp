@@ -6,6 +6,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { HttpClientModule } from '@angular/common/http';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ToastrModule } from 'ngx-toastr';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -19,6 +20,7 @@ import { LazyloadDirective } from './lazyload.directive';
     BrowserAnimationsModule,
     MatToolbarModule,
     MatTabsModule,
+    MatProgressSpinnerModule,
     HttpClientModule,
     MatDialogModule,
     ToastrModule.forRoot(),

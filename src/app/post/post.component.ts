@@ -8,23 +8,13 @@ import { PageEvent } from '@angular/material/paginator';
   templateUrl: './post.component.html',
   styleUrls: ['./post.component.scss'],
 })
-export class PostComponent implements OnInit, DoCheck {
+export class PostComponent implements OnInit {
   posts: PostItem[] = [];
   pageIndex: number = 0;
   prevPageIndex: number = 0;
   loadingStatus: number = 1;
 
   constructor(private postService: PostService) {}
-
-  ngDoCheck(): void {
-    if (this.prevPageIndex !== this.pageIndex) {
-      this.prevPageIndex = this.pageIndex;
-      this.postService.getPostPaging(this.pageIndex).subscribe((posts) => {
-        this.posts = [...posts];
-        this.loadingStatus = 0;
-      });
-    }
-  }
 
   ngOnInit(): void {
     this.postService.getPostPaging(this.pageIndex).subscribe((posts) => {
@@ -36,5 +26,9 @@ export class PostComponent implements OnInit, DoCheck {
   handlePageEvent = ($event: PageEvent) => {
     this.pageIndex = $event.pageIndex;
     this.loadingStatus = 1;
+    this.postService.getPostPaging(this.pageIndex).subscribe((posts) => {
+      this.posts = [...posts];
+      this.loadingStatus = 0;
+    });
   };
 }

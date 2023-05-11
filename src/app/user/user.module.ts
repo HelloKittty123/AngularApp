@@ -6,6 +6,9 @@ import { MatTableModule } from '@angular/material/table';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { UserRoutingModule } from './user-routing.module';
 import { UserComponent } from './user.component';
@@ -23,10 +26,13 @@ import { UserUpdateDialogComponent } from '../user-update-dialog/user-update-dia
     UserRoutingModule,
     MatPaginatorModule,
     MatProgressSpinnerModule,
+    MatFormFieldModule,
+    MatInputModule,
     MatTableModule,
     MatDialogModule,
     MatGridListModule,
     MatButtonModule,
+    ReactiveFormsModule,
   ],
 })
 export class UserModule {}

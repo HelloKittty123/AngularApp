@@ -2,21 +2,156 @@
   {{ data === null ? "Create" : "Update" }} User Information
 </h2>
 <mat-dialog-content>
-  <mat-grid-list cols="6" rowHeight="50px" style="min-width: 900px">
-    <mat-grid-tile
-      *ngFor="let tile of tiles"
-      [colspan]="tile.cols"
-      [rowspan]="tile.rows"
+  <div style="width: 800px">
+    <form
+      class="update-user"
+      [formGroup]="updateUserForm"
+      (ngSubmit)="onSubmit()"
     >
-      <div class="mat-content-text">
-        {{ tile.text }}
-      </div>
-    </mat-grid-tile>
-  </mat-grid-list>
+      <table class="form" cellSpacing="0">
+        <tr>
+          <td colspan="2">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Name</mat-label>
+              <input
+                required
+                matInput
+                placeholder="Enter name"
+                formControlName="name"
+              />
+            </mat-form-field>
+          </td>
+          <td>
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>User Name</mat-label>
+              <input
+                required
+                matInput
+                placeholder="Enter user name"
+                formControlName="username"
+              />
+            </mat-form-field>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="3">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Email</mat-label>
+              <input
+                required
+                matInput
+                placeholder="Enter email"
+                formControlName="email"
+              />
+            </mat-form-field>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Street</mat-label>
+              <input
+                required
+                matInput
+                placeholder="Enter street"
+                formControlName="street"
+              />
+            </mat-form-field>
+          </td>
+          <td>
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Suite</mat-label>
+              <input
+                required
+                matInput
+                placeholder="Enter suite"
+                formControlName="suite"
+              />
+            </mat-form-field>
+          </td>
+          <td>
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Zipcode</mat-label>
+              <input
+                required
+                matInput
+                placeholder="Enter zipcode"
+                formControlName="zipcode"
+              />
+            </mat-form-field>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Phone</mat-label>
+              <input
+                required
+                matInput
+                placeholder="Enter phone"
+                formControlName="phone"
+              />
+            </mat-form-field>
+          </td>
+          <td colspan="2">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Website</mat-label>
+              <input
+                required
+                matInput
+                placeholder="Enter website"
+                formControlName="website"
+              />
+            </mat-form-field>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Name Company</mat-label>
+              <input
+                required
+                matInput
+                placeholder="Enter name company"
+                formControlName="nameCompany"
+              />
+            </mat-form-field>
+          </td>
+          <td>
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Catch Phrase</mat-label>
+              <input
+                required
+                matInput
+                placeholder="Enter catch phrase"
+                formControlName="catchPhrase"
+              />
+            </mat-form-field>
+          </td>
+          <td>
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>BS</mat-label>
+              <input
+                required
+                matInput
+                placeholder="Enter bs"
+                formControlName="bs"
+              />
+            </mat-form-field>
+          </td>
+        </tr>
+      </table>
+      <mat-dialog-actions align="end">
+        <button
+          mat-button
+          color="primary"
+          type="submit"
+          [disabled]="updateUserForm.invalid"
+        >
+          {{ data ? "Update" : "Create" }}
+        </button>
+        <button mat-button mat-dialog-close>Cancel</button>
+      </mat-dialog-actions>
+    </form>
+  </div>
 </mat-dialog-content>
-<mat-dialog-actions align="end">
-  <button mat-button color="primarty">
-    {{ data === null ? "Create" : "Update" }}
-  </button>
-  <button mat-button mat-dialog-close>Cancel</button>
-</mat-dialog-actions>

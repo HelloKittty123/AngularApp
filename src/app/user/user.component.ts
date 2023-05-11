@@ -1,4 +1,4 @@
-import { Component, DoCheck, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { User } from '../type';
 import { UserService } from 'src/service/user/user.service';
 import { PageEvent } from '@angular/material/paginator';
@@ -12,10 +12,9 @@ import { NotificationService } from 'src/service/notification/notification.servi
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.scss'],
 })
-export class UserComponent implements OnInit, DoCheck {
+export class UserComponent implements OnInit {
   users: User[] = [];
   pageIndex: number = 0;
-  prevPageIndex: number = 0;
   loadingStatus: number = 1;
   deleteId?: number | null;
   displayedColumns: string[] = ['id', 'name', 'email', 'phone', 'button'];
@@ -25,31 +24,6 @@ export class UserComponent implements OnInit, DoCheck {
     public dialog: MatDialog,
     private notifyService: NotificationService
   ) {}
-
-  ngDoCheck(): void {
-    if (this.prevPageIndex !== this.pageIndex) {
-      this.prevPageIndex = this.pageIndex;
-      this.userService
-        .getUserByPaging(this.pageIndex + 1)
-        .subscribe((users) => {
-          this.users = [...users];
-          this.loadingStatus = 0;
-        });
-    }
-    if (this.deleteId) {
-      this.userService.deleteUser(this.deleteId).subscribe((res) => {
-        this.deleteId = null;
-
-        this.userService
-          .getUserByPaging(this.pageIndex + 1)
-          .subscribe((users) => {
-            this.users = [...users];
-            this.loadingStatus = 0;
-            this.notifyService.showSuccess('Delete user success', 'Delete');
-          });
-      });
-    }
-  }
 
   ngOnInit(): void {
     this.userService.getUserByPaging(this.pageIndex + 1).subscribe((users) => {
@@ -63,23 +37,65 @@ export class UserComponent implements OnInit, DoCheck {
       data: { ...user },
     });
 
-    dialogRef.afterClosed().subscribe((result) => console.log(result));
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(result);
+    });
   };
 
-  openEditDialog = (user: User): void => {
+  openEditDialog = (user?: User): void => {
     const dialogRef = this.dialog.open(UserUpdateDialogComponent, {
       data: user,
     });
-    dialogRef.afterClosed().subscribe((result) => console.log(result));
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.loadingStatus = 1;
+        if (result.isCreate) {
+          this.userService.createUser(result).subscribe(() => {
+            this.userService
+              .getUserByPaging(this.pageIndex + 1)
+              .subscribe((users) => {
+                this.users = [...users];
+                this.loadingStatus = 0;
+                this.notifyService.showSuccess('Create user success', 'Create');
+              });
+          });
+        } else {
+          this.userService.updateUser(result).subscribe(() => {
+            this.userService
+              .getUserByPaging(this.pageIndex + 1)
+              .subscribe((users) => {
+                this.users = [...users];
+                this.loadingStatus = 0;
+                this.notifyService.showSuccess('Update user success', 'Update');
+              });
+          });
+        }
+      }
+    });
   };
 
   handlePageEvent = ($event: PageEvent) => {
     this.pageIndex = $event.pageIndex;
     this.loadingStatus = 1;
+    this.userService.getUserByPaging(this.pageIndex + 1).subscribe((users) => {
+      this.users = [...users];
+      this.loadingStatus = 0;
+    });
   };
 
   deleteUser = (id: number): void => {
     this.deleteId = id;
     this.loadingStatus = 1;
+    this.userService.deleteUser(this.deleteId).subscribe((res) => {
+      this.deleteId = null;
+
+      this.userService
+        .getUserByPaging(this.pageIndex + 1)
+        .subscribe((users) => {
+          this.users = [...users];
+          this.loadingStatus = 0;
+          this.notifyService.showSuccess('Delete user success', 'Delete');
+        });
+    });
   };
 }
