@@ -9,7 +9,7 @@ import { UserService } from 'src/service/user/user.service';
   templateUrl: './user-update-dialog.component.html',
   styleUrls: ['./user-update-dialog.component.scss'],
 })
-export class UserUpdateDialogComponent implements OnInit, DoCheck {
+export class UserUpdateDialogComponent implements OnInit {
   updateUserForm!: FormGroup;
 
   constructor(
@@ -65,9 +65,5 @@ export class UserUpdateDialogComponent implements OnInit, DoCheck {
       },
       isCreate: this.data ? false : true,
     });
-  }
-
-  ngDoCheck(): void {
-    // throw new Error('Method not implemented.');
   }
 }

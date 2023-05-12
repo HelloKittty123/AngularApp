@@ -6,6 +6,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { PostRoutingModule } from './post-routing.module';
 import { PostComponent } from './post.component';
+import { CommentsModule } from '../comments/comments.module';
 
 @NgModule({
   declarations: [PostComponent],
@@ -15,6 +16,7 @@ import { PostComponent } from './post.component';
     MatCardModule,
     MatPaginatorModule,
     MatProgressSpinnerModule,
+    CommentsModule,
   ],
 })
 export class PostModule {}

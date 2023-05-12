@@ -1,0 +1,19 @@
+.comment-input {
+  width: 700px;
+  margin-left: 15px;
+  display: flex;
+  flex-direction: column;
+  column-gap: 20px;
+
+  .button-send {
+    width: 120px;
+  }
+
+  .column {
+    padding: 5px;
+
+    .form-input-table {
+      width: 100%;
+    }
+  }
+}

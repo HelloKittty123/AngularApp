@@ -9,6 +9,38 @@
     <div style="font-weight: 500; margin-top: 30px; margin-left: 15px">
       Comments:
     </div>
+    <form class="comment-input" [formGroup]="commentForm" (ngSubmit)="submit()">
+      <table>
+        <tr>
+          <td class="column">
+            <mat-form-field class="form-input-table">
+              <mat-label>Title</mat-label>
+              <input matInput placeholder="Enter title..." />
+            </mat-form-field>
+          </td>
+
+          <td class="column">
+            <mat-form-field class="form-input-table">
+              <mat-label>Email</mat-label>
+              <input matInput placeholder="Enter email..." />
+            </mat-form-field>
+          </td>
+        </tr>
+      </table>
+      <mat-form-field>
+        <mat-label>Comment</mat-label>
+        <textarea matInput placeholder="Enter comment..." rows="4"></textarea>
+      </mat-form-field>
+      <button
+        mat-raised-button
+        color="primary"
+        class="button-send"
+        type="submit"
+      >
+        <span> Send </span>
+        <mat-icon iconPositionEnd>send</mat-icon>
+      </button>
+    </form>
     <mat-card *ngFor="let comment of comments">
       <mat-card-header>
         <mat-card-title style="font-size: 14px">
@@ -20,7 +52,6 @@
     </mat-card>
   </div>
 </div>
-
 <ng-template #loading>
   <div class="loading">
     <mat-spinner></mat-spinner>

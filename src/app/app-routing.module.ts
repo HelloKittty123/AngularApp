@@ -21,11 +21,6 @@ const routes: Routes = [
     pathMatch: 'full',
   },
   {
-    path: 'comments',
-    loadChildren: () =>
-      import('./comments/comments.module').then((m) => m.CommentsModule),
-  },
-  {
     path: 'photo',
     loadChildren: () =>
       import('./photo/photo.module').then((m) => m.PhotoModule),
