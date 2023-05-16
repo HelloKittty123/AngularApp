@@ -7,13 +7,15 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ToastrModule } from 'ngx-toastr';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatButtonModule } from '@angular/material/button';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LazyloadDirective } from './lazyload.directive';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 @NgModule({
-  declarations: [AppComponent, LazyloadDirective],
+  declarations: [AppComponent, LazyloadDirective, PageNotFoundComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -23,6 +25,7 @@ import { LazyloadDirective } from './lazyload.directive';
     MatProgressSpinnerModule,
     HttpClientModule,
     MatDialogModule,
+    MatButtonModule,
     ToastrModule.forRoot(),
   ],
   providers: [],

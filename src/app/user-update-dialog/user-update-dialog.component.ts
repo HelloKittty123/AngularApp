@@ -1,6 +1,6 @@
 import { Component, DoCheck, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Tile, User } from '../type';
+import { Role, Tile, User } from '../type';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { UserService } from 'src/service/user/user.service';
 
@@ -38,7 +38,6 @@ export class UserUpdateDialogComponent implements OnInit {
 
   onSubmit(): void {
     this.dialogRef.close({
-      id: this.data?.id ? this.data?.id : Math.random() * 1000000,
       name: this.updateUserForm.value.name,
       username: this.updateUserForm.value.username,
       email: this.updateUserForm.value.email,
@@ -64,6 +63,7 @@ export class UserUpdateDialogComponent implements OnInit {
         bs: this.updateUserForm.value.bs,
       },
       isCreate: this.data ? false : true,
+      role: Role.User,
     });
   }
 }

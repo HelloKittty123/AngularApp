@@ -1,13 +1,15 @@
-import { Component, DoCheck, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RoutePath } from './type';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Event, NavigationEnd, Router } from '@angular/router';
+import { CacheServiceService } from 'src/service/cache/cache-service.service';
+import { UserService } from 'src/service/user/user.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent implements DoCheck {
+export class AppComponent implements OnInit {
   title = 'angularApp';
   loadingStatus: boolean = false;
   links: RoutePath[] = [
@@ -17,12 +19,29 @@ export class AppComponent implements DoCheck {
   ];
   activeLink!: string;
 
-  constructor(private route: ActivatedRoute, private router: Router) {}
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private cacheService: CacheServiceService,
+    private userService: UserService
+  ) {}
 
-  ngDoCheck(): void {
-    if (this.router.url !== '/')
-      this.activeLink = this.links.filter((link) =>
-        this.router.url.includes(link.path)
-      )[0].path;
+  isLogin(): boolean {
+    return this.userService.isLogin();
   }
+
+  ngOnInit(): void {
+    this.router.events.subscribe((event: Event) => {
+      if (event instanceof NavigationEnd) {
+        this.activeLink = this.links.filter((link) =>
+          event.urlAfterRedirects.includes(link.path)
+        )[0]?.path;
+      }
+    });
+  }
+
+  logout = (): void => {
+    this.cacheService.clearCookie();
+    this.router.navigate(['login']);
+  };
 }

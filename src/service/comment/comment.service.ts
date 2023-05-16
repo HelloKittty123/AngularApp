@@ -15,4 +15,10 @@ export class CommentService {
       .get<CommentItem[]>(`${environment.apiURL}post/${idPost}/comments`)
       .pipe(delay(700));
   };
+
+  postComment = (comment: CommentItem): Observable<CommentItem> => {
+    return this.http
+      .post<CommentItem>(`${environment.apiURL}comments`, comment)
+      .pipe(delay(700));
+  };
 }

@@ -15,21 +15,34 @@
           <td class="column">
             <mat-form-field class="form-input-table">
               <mat-label>Title</mat-label>
-              <input matInput placeholder="Enter title..." />
+              <input
+                matInput
+                placeholder="Enter title..."
+                formControlName="name"
+              />
             </mat-form-field>
           </td>
 
           <td class="column">
             <mat-form-field class="form-input-table">
               <mat-label>Email</mat-label>
-              <input matInput placeholder="Enter email..." />
+              <input
+                matInput
+                placeholder="Enter email..."
+                formControlName="email"
+              />
             </mat-form-field>
           </td>
         </tr>
       </table>
       <mat-form-field>
         <mat-label>Comment</mat-label>
-        <textarea matInput placeholder="Enter comment..." rows="4"></textarea>
+        <textarea
+          matInput
+          placeholder="Enter comment..."
+          rows="4"
+          formControlName="body"
+        ></textarea>
       </mat-form-field>
       <button
         mat-raised-button

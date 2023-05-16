@@ -12,7 +12,6 @@ import { CommentService } from 'src/service/comment/comment.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmLeaveDialogComponent } from '../confirm-leave-dialog/confirm-leave-dialog.component';
-import { CheckDeactivate } from 'src/service/canLeave/can-leave-service.service';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -20,7 +19,7 @@ import { Observable } from 'rxjs';
   templateUrl: './comments.component.html',
   styleUrls: ['./comments.component.scss'],
 })
-export class CommentsComponent implements OnInit, CheckDeactivate {
+export class CommentsComponent implements OnInit {
   post!: PostItem;
   comments: CommentItem[] = [];
   loadingStatus: number = 1;
@@ -37,18 +36,37 @@ export class CommentsComponent implements OnInit, CheckDeactivate {
 
   ngOnInit(): void {
     this.commentForm = this.fb.group({
-      name: ['', Validators.compose([Validators.required])],
-      email: ['', Validators.compose([Validators.required])],
-      body: ['', Validators.compose([Validators.required])],
+      name: [
+        '',
+        {
+          nonNullable: true,
+          validators: Validators.compose([Validators.required]),
+        },
+      ],
+      email: [
+        '',
+        {
+          nonNullable: true,
+          validators: Validators.compose([Validators.required]),
+        },
+      ],
+      body: [
+        '',
+        {
+          nonNullable: true,
+          validators: Validators.compose([Validators.required]),
+        },
+      ],
     });
+
     const postId = Number(this.route.snapshot.paramMap.get('id'));
     this.postService.getPostItem(postId).subscribe((post) => {
       this.post = { ...post };
 
       this.commentService.getComment(postId).subscribe((comments) => {
         this.comments = [...comments];
+        this.loadingStatus = 0;
       });
-      this.loadingStatus = 0;
     });
   }
 
@@ -57,25 +75,10 @@ export class CommentsComponent implements OnInit, CheckDeactivate {
       .length;
   };
 
-  checkDeactivate(
-    currentRoute: ActivatedRouteSnapshot,
-    currentState: RouterStateSnapshot,
-    nextState?: RouterStateSnapshot | undefined
-  ):
-    | boolean
-    | UrlTree
-    | Observable<boolean | UrlTree>
-    | Promise<boolean | UrlTree> {
-    return this.isEdit();
-  }
-
-  openLeaveDialog = (): void => {
+  openLeaveDialog = (): Observable<boolean> => {
     const dialogRef = this.dialog.open(ConfirmLeaveDialogComponent);
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-      }
-    });
+    return dialogRef.afterClosed();
   };
 
   submit = (): void => {
@@ -85,6 +88,23 @@ export class CommentsComponent implements OnInit, CheckDeactivate {
       email: this.commentForm.value.email,
       body: this.commentForm.value.body,
     };
+
+    this.loadingStatus = 1;
+
+    this.commentService.postComment(comment).subscribe((comment) =>
+      this.commentService.getComment(this.post.id).subscribe((comments) => {
+        this.comments = [...comments];
+        this.commentForm.reset({
+          name: '',
+          email: '',
+          body: '',
+        });
+
+        console.log(this.commentForm);
+
+        this.loadingStatus = 0;
+      })
+    );
   };
 
   backControl = () => {

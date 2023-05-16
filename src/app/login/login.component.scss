@@ -1,0 +1,32 @@
+.login {
+  height: 100vh;
+  width: 100%;
+  background-color: #f2f2f2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .login-form {
+    background-color: white;
+    height: 600px;
+    width: 390px;
+    border-radius: 10px;
+    padding: 77px 55px 33px;
+    box-sizing: border-box;
+    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
+
+    .login-form-title {
+      padding: 15px 0;
+      font-size: 25px;
+      font-weight: 600;
+      display: flex;
+      justify-content: center;
+    }
+
+    .login-form-input-wrap {
+      .login-form-input {
+        width: 100%;
+      }
+    }
+  }
+}

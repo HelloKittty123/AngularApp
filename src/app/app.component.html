@@ -1,23 +1,22 @@
-<mat-toolbar color="primary"> My Angular App </mat-toolbar>
-<nav mat-tab-nav-bar [tabPanel]="tabPanel">
-  <a
-    mat-tab-link
-    *ngFor="let link of links"
-    (click)="activeLink = link.path"
-    [active]="activeLink == link.path"
-    routerLink="{{ link.path }}"
+<div *ngIf="isLogin()">
+  <mat-toolbar
+    color="primary"
+    style="display: flex; justify-content: space-between"
   >
-    {{ link.title }}
-  </a>
-</nav>
-<mat-tab-nav-panel #tabPanel></mat-tab-nav-panel>
-<router-outlet></router-outlet>
-
-<div class="container" *ngIf="loadingStatus">
-  <div class="loading">
-    <mat-spinner></mat-spinner>
-    <span> Loading... </span>
-  </div>
+    <span> My Angular App </span>
+    <button mat-raised-button (click)="logout()">Log out</button>
+  </mat-toolbar>
+  <nav mat-tab-nav-bar [tabPanel]="tabPanel">
+    <a
+      mat-tab-link
+      *ngFor="let link of links"
+      (click)="activeLink = link.path"
+      [active]="activeLink == link.path"
+      routerLink="{{ link.path }}"
+    >
+      {{ link.title }}
+    </a>
+  </nav>
+  <mat-tab-nav-panel #tabPanel></mat-tab-nav-panel>
 </div>
-
-<ng-template #loading> </ng-template>
+<router-outlet></router-outlet>

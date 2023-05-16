@@ -1,5 +1,6 @@
 import { Observable } from 'rxjs';
 import { Injectable, inject } from '@angular/core';
+
 import {
   ActivatedRouteSnapshot,
   CanDeactivateFn,
@@ -14,7 +15,7 @@ import { CommentsComponent } from 'src/app/comments/comments.component';
 export class CanLeaveServiceService {
   constructor() {}
 
-  canDeactivate<CommentsComponent>(
+  canDeactivate(
     component: CommentsComponent,
     currentRoute: ActivatedRouteSnapshot,
     currentState: RouterStateSnapshot,
@@ -24,20 +25,8 @@ export class CanLeaveServiceService {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    return component.isEdit();
+    return !component.isEdit() || component.openLeaveDialog();
   }
-}
-
-export interface CheckDeactivate {
-  checkDeactivate(
-    currentRoute: ActivatedRouteSnapshot,
-    currentState: RouterStateSnapshot,
-    nextState?: RouterStateSnapshot
-  ):
-    | Observable<boolean | UrlTree>
-    | Promise<boolean | UrlTree>
-    | boolean
-    | UrlTree;
 }
 
 export const DeActiveGuard: CanDeactivateFn<CommentsComponent> = (

@@ -13,13 +13,19 @@
           <td colspan="2">
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Name</mat-label>
-              <input matInput placeholder="Enter name" formControlName="name" />
+              <input
+                required
+                matInput
+                placeholder="Enter name"
+                formControlName="name"
+              />
             </mat-form-field>
           </td>
           <td>
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>User Name</mat-label>
               <input
+                required
                 matInput
                 placeholder="Enter user name"
                 formControlName="username"
@@ -32,6 +38,7 @@
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Email</mat-label>
               <input
+                required
                 matInput
                 placeholder="Enter email"
                 formControlName="email"

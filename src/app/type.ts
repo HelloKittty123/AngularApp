@@ -41,11 +41,13 @@ export interface User {
   phone: string;
   website: string;
   company: UserCompany;
+  role: Role;
 }
 
-// export interface UserUpdate extends User {
-//   isCreate: boolean;
-// }
+export enum Role {
+  Admin = 1,
+  User = 2,
+}
 
 export interface UserAddress {
   street: string;
