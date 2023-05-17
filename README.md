@@ -2,6 +2,26 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.0.0.
 
+## Summary
+
+This project is develop to demo Angular with some function, knowledge basic about Angular and demo with RESTful API in screen `User`
+
+## Install AngularCLI
+
+Run `npm install -g @angular/cli` to install angular CLI (must to download nodeJs first)
+
+## Install Json server
+
+Run `npm install -g json-server` to install json-server (this is the tool to fake API)
+
+## Install node_modules
+
+Run `npm i` to install library need for project (the library declare in package.json)
+
+## Running fake api
+
+Move to folder FakeAPI and run `json-server --watch db.json`
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
