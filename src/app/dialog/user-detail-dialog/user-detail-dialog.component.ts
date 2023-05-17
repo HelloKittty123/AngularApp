@@ -1,6 +1,6 @@
 import { Component, Inject, DoCheck } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Tile, User } from '../type';
+import { Tile, User } from '../../type';
 import { convertObjectToString } from 'src/utils/common';
 
 @Component({

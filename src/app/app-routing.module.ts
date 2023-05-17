@@ -5,6 +5,7 @@ import {
   ActiveGuard,
   ActiveLoginGuard,
 } from 'src/service/canActive/can-active.service';
+import { Role } from './type';
 
 const routes: Routes = [
   {
@@ -22,8 +23,8 @@ const routes: Routes = [
   {
     path: 'user',
     canActivate: [ActiveGuard],
-
     loadChildren: () => import('./user/user.module').then((m) => m.UserModule),
+    data: { authority: Role.Admin },
   },
   {
     path: '',
@@ -31,17 +32,15 @@ const routes: Routes = [
     pathMatch: 'full',
   },
   {
-    path: 'photo',
-    canActivate: [ActiveGuard],
-
-    loadChildren: () =>
-      import('./photo/photo.module').then((m) => m.PhotoModule),
-  },
-  {
     path: 'login',
     loadChildren: () =>
       import('./login/login.module').then((m) => m.LoginModule),
     canActivate: [ActiveLoginGuard],
+  },
+  {
+    path: 'forbidden',
+    loadChildren: () =>
+      import('./forbidden/forbidden.module').then((m) => m.ForbiddenModule),
   },
   {
     path: '**',

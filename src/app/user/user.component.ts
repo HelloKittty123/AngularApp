@@ -3,9 +3,9 @@ import { Role, User } from '../type';
 import { UserService } from 'src/service/user/user.service';
 import { PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
-import { UserDetailDialogComponent } from '../user-detail-dialog/user-detail-dialog.component';
-import { UserUpdateDialogComponent } from '../user-update-dialog/user-update-dialog.component';
+import { UserDetailDialogComponent } from '../dialog/user-detail-dialog/user-detail-dialog.component';
 import { NotificationService } from 'src/service/notification/notification.service';
+import { UserUpdateDialogComponent } from '../dialog/user-update-dialog/user-update-dialog.component';
 
 @Component({
   selector: 'app-user',
@@ -18,6 +18,7 @@ export class UserComponent implements OnInit {
   loadingStatus: number = 1;
   deleteId?: number | null;
   displayedColumns: string[] = ['id', 'name', 'email', 'phone', 'button'];
+  totalItem!: number;
 
   constructor(
     private userService: UserService,
@@ -27,8 +28,9 @@ export class UserComponent implements OnInit {
 
   ngOnInit(): void {
     this.userService.getUserByPaging(this.pageIndex + 1).subscribe((users) => {
-      this.users = [...users];
+      this.users = [...users.body!];
       this.loadingStatus = 0;
+      this.totalItem = Number(users.headers.get('X-Total-Count'));
     });
   }
 
@@ -54,7 +56,8 @@ export class UserComponent implements OnInit {
             this.userService
               .getUserByPaging(this.pageIndex + 1)
               .subscribe((users) => {
-                this.users = [...users];
+                this.users = [...users.body!];
+                this.totalItem = Number(users.headers.get('X-Total-Count'));
                 this.loadingStatus = 0;
                 this.notifyService.showSuccess('Create user success', 'Create');
               });
@@ -64,7 +67,7 @@ export class UserComponent implements OnInit {
             this.userService
               .getUserByPaging(this.pageIndex + 1)
               .subscribe((users) => {
-                this.users = [...users];
+                this.users = [...users.body!];
                 this.loadingStatus = 0;
                 this.notifyService.showSuccess('Update user success', 'Update');
               });
@@ -78,7 +81,7 @@ export class UserComponent implements OnInit {
     this.pageIndex = $event.pageIndex;
     this.loadingStatus = 1;
     this.userService.getUserByPaging(this.pageIndex + 1).subscribe((users) => {
-      this.users = [...users];
+      this.users = [...users.body!];
       this.loadingStatus = 0;
     });
   };
@@ -92,8 +95,9 @@ export class UserComponent implements OnInit {
       this.userService
         .getUserByPaging(this.pageIndex + 1)
         .subscribe((users) => {
-          this.users = [...users];
+          this.users = [...users.body!];
           this.loadingStatus = 0;
+          this.totalItem = Number(users.headers.get('X-Total-Count'));
           this.notifyService.showSuccess('Delete user success', 'Delete');
         });
     });

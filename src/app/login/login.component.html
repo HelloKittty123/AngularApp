@@ -46,3 +46,8 @@
     </div>
   </form>
 </div>
+
+<div *ngIf="loadingStatus === 1" class="loading">
+  <mat-spinner></mat-spinner>
+  <span>Loading...</span>
+</div>

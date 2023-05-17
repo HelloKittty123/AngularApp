@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, delay } from 'rxjs';
 import { PostItem } from 'src/app/type';
@@ -15,9 +15,11 @@ export class PostService {
     return this.http.get<PostItem[]>(`${environment.apiURL}posts`);
   };
 
-  getPostPaging = (pageIndex: number): Observable<PostItem[]> => {
+  getPostPaging = (pageIndex: number): Observable<HttpResponse<PostItem[]>> => {
     return this.http
-      .get<PostItem[]>(`${environment.apiURL}posts?_page=${pageIndex + 1}`)
+      .get<PostItem[]>(`${environment.apiURL}posts?_page=${pageIndex + 1}`, {
+        observe: 'response',
+      })
       .pipe(delay(700));
   };
 

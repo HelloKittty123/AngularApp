@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import * as CryptoJS from 'crypto-js';
+import { environment } from 'src/environments/environment';
+
 import { CacheServiceService } from 'src/service/cache/cache-service.service';
 import { SessionStateService } from 'src/service/session/session-state.service';
 import { UserService } from 'src/service/user/user.service';
@@ -13,7 +16,7 @@ import { UserService } from 'src/service/user/user.service';
 export class LoginComponent implements OnInit {
   hide: boolean = true;
   isValidError: boolean = false;
-
+  loadingStatus: number = 0;
   loginForm!: FormGroup;
 
   constructor(
@@ -44,14 +47,19 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(): void {
+    this.loadingStatus = 1;
     this.userService.login({ ...this.loginForm.value }).subscribe({
       next: (res) => {
-        if (Object.keys(res).length) {
-          this.cacheService.setCookie('email', this.loginForm.value.email);
-          this.cacheService.setCookie(
-            'userName',
-            this.loginForm.value.password
-          );
+        if (res.length) {
+          this.userService.authenticate(res[0]);
+
+          var token = CryptoJS.AES.encrypt(
+            JSON.stringify(res[0]),
+            environment.key
+          ).toString();
+
+          this.cacheService.setCookie('token', token);
+
           const previousUrl = this.sessionStateService.getUrl();
           if (previousUrl) {
             this.sessionStateService.clearUrl();
@@ -64,6 +72,8 @@ export class LoginComponent implements OnInit {
           this.loginForm.reset();
           this.isValidError = true;
         }
+
+        this.loadingStatus = 0;
       },
       error: (err) => {
         console.log(err);

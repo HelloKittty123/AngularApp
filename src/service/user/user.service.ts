@@ -1,7 +1,9 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, delay } from 'rxjs';
-import { User } from 'src/app/type';
+import { Observable, ReplaySubject, delay, map } from 'rxjs';
+import * as CryptoJS from 'crypto-js';
+
+import { Role, User } from 'src/app/type';
 import { environment } from 'src/environments/environment';
 import { CacheServiceService } from '../cache/cache-service.service';
 
@@ -9,17 +11,47 @@ import { CacheServiceService } from '../cache/cache-service.service';
   providedIn: 'root',
 })
 export class UserService {
+  private user: User | null = null;
+  private authenticationState = new ReplaySubject<User | null>(1);
+
   constructor(
     private http: HttpClient,
     private cacheService: CacheServiceService
   ) {}
 
-  getUserByPaging = (pageIndex: number): Observable<User[]> => {
+  getAuthenticationState = (): Observable<User | null> => {
+    return this.authenticationState.asObservable();
+  };
+
+  authenticate = (user: User | null): void => {
+    this.user = user;
+    this.authenticationState.next(this.user);
+  };
+
+  hasAuthority = (authority: Role): boolean => {
+    return this.user?.role === authority;
+  };
+
+  getIdentity = (): void => {
+    var token: string = this.cacheService.getCookie('token');
+    if (token) {
+      this.authenticate(
+        JSON.parse(
+          CryptoJS.AES.decrypt(token.trim(), environment.key.trim()).toString(
+            CryptoJS.enc.Utf8
+          )
+        )
+      );
+    }
+  };
+
+  getUserByPaging = (pageIndex: number): Observable<HttpResponse<User[]>> => {
     return this.http
       .get<User[]>(`${environment.apiURL}users?_page=${pageIndex}`, {
         params: {
           role: 2,
         },
+        observe: 'response',
       })
       .pipe(delay(700));
   };
@@ -27,9 +59,9 @@ export class UserService {
   login = (loginUser: {
     email: string;
     password: string;
-  }): Observable<User> => {
+  }): Observable<User[]> => {
     return this.http
-      .get<User>(`${environment.apiURL}users`, {
+      .get<User[]>(`${environment.apiURL}users`, {
         params: {
           email: loginUser.email,
           username: loginUser.password,
@@ -60,12 +92,5 @@ export class UserService {
     return this.http
       .delete<User>(`${environment.apiURL}users/${userId}`)
       .pipe(delay(700));
-  };
-
-  isLogin = (): boolean => {
-    return !!(
-      this.cacheService.getCookie('email') &&
-      this.cacheService.getCookie('userName')
-    );
   };
 }

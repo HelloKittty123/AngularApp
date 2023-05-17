@@ -9,7 +9,8 @@ import {
 } from '@angular/router';
 import { CacheServiceService } from '../cache/cache-service.service';
 import { SessionStateService } from '../session/session-state.service';
-import { Location } from '@angular/common';
+import { UserService } from '../user/user.service';
+import { Role } from 'src/app/type';
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +20,7 @@ export class CanActiveService {
     private cacheService: CacheServiceService,
     private router: Router,
     private stateStateService: SessionStateService,
-    private location: Location
+    private userService: UserService
   ) {}
 
   canActivate(
@@ -30,10 +31,12 @@ export class CanActiveService {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    if (
-      this.cacheService.getCookie('email') &&
-      this.cacheService.getCookie('userName')
-    ) {
+    if (this.cacheService.getCookie('token')) {
+      const authority: Role = route.data['authority'];
+      if (authority && !this.userService.hasAuthority(authority)) {
+        this.router.navigate(['forbidden'], { replaceUrl: true });
+        return false;
+      }
       return true;
     } else {
       this.stateStateService.storeUrl(state.url);
@@ -50,11 +53,9 @@ export class CanActiveService {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    if (
-      this.cacheService.getCookie('email') &&
-      this.cacheService.getCookie('userName')
-    ) {
-      this.location.back();
+    if (this.cacheService.getCookie('token')) {
+      this.router.navigate(['']);
+
       return false;
     }
     return true;

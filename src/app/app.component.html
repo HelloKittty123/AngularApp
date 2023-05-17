@@ -1,22 +1,46 @@
-<div *ngIf="isLogin()">
+<div *ngIf="user">
   <mat-toolbar
     color="primary"
     style="display: flex; justify-content: space-between"
   >
     <span> My Angular App </span>
-    <button mat-raised-button (click)="logout()">Log out</button>
+    <div style="display: flex; column-gap: 15px; align-items: center">
+      <span style="font-size: 14px" matTooltip="{{ user.email }}"
+        >Hello {{ user.role === 1 ? "Admin" : user.username }}</span
+      >
+      <button mat-raised-button (click)="logout()">Log out</button>
+    </div>
   </mat-toolbar>
-  <nav mat-tab-nav-bar [tabPanel]="tabPanel">
+
+  <nav
+    mat-tab-nav-bar
+    [tabPanel]="tabPanel"
+    [ngSwitch]="user && user.role === 1"
+  >
     <a
       mat-tab-link
-      *ngFor="let link of links"
-      (click)="activeLink = link.path"
-      [active]="activeLink == link.path"
-      routerLink="{{ link.path }}"
-    >
-      {{ link.title }}
+      (click)="activeLink = 'post'"
+      [active]="activeLink == 'post'"
+      routerLink="post"
+      >Post
+    </a>
+    <a
+      mat-tab-link
+      (click)="activeLink = 'album'"
+      [active]="activeLink == 'album'"
+      routerLink="album"
+      >Album
+    </a>
+    <a
+      mat-tab-link
+      (click)="activeLink = 'user'"
+      [active]="activeLink == 'user'"
+      routerLink="user"
+      *ngSwitchCase="true"
+      >User
     </a>
   </nav>
   <mat-tab-nav-panel #tabPanel></mat-tab-nav-panel>
 </div>
+
 <router-outlet></router-outlet>

@@ -7,7 +7,7 @@ import {
   RouterStateSnapshot,
   UrlTree,
 } from '@angular/router';
-import { CommentsComponent } from 'src/app/comments/comments.component';
+import { CommentsComponent } from 'src/app/post/comments/comments.component';
 
 @Injectable({
   providedIn: 'root',

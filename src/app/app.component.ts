@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { RoutePath } from './type';
+import { Role, RoutePath, User } from './type';
 import { ActivatedRoute, Event, NavigationEnd, Router } from '@angular/router';
 import { CacheServiceService } from 'src/service/cache/cache-service.service';
 import { UserService } from 'src/service/user/user.service';
@@ -18,6 +18,7 @@ export class AppComponent implements OnInit {
     { title: 'User', path: 'user' },
   ];
   activeLink!: string;
+  user: User | null = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -26,11 +27,13 @@ export class AppComponent implements OnInit {
     private userService: UserService
   ) {}
 
-  isLogin(): boolean {
-    return this.userService.isLogin();
-  }
-
   ngOnInit(): void {
+    this.userService.getAuthenticationState().subscribe((user) => {
+      this.user = user;
+    });
+
+    this.userService.getIdentity();
+
     this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationEnd) {
         this.activeLink = this.links.filter((link) =>
@@ -42,6 +45,7 @@ export class AppComponent implements OnInit {
 
   logout = (): void => {
     this.cacheService.clearCookie();
+    this.userService.authenticate(null);
     this.router.navigate(['login']);
   };
 }

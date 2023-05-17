@@ -1,8 +1,9 @@
 import { Component, DoCheck, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Role, Tile, User } from '../type';
+
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { UserService } from 'src/service/user/user.service';
+import { Role, User } from 'src/app/type';
 
 @Component({
   selector: 'app-user-update-dialog',

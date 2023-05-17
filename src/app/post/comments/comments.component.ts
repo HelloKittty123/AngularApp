@@ -1,17 +1,12 @@
 import { PostService } from 'src/service/post/post.service';
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import {
-  ActivatedRoute,
-  ActivatedRouteSnapshot,
-  RouterStateSnapshot,
-  UrlTree,
-} from '@angular/router';
-import { CommentItem, PostItem } from '../type';
+import { ActivatedRoute } from '@angular/router';
+import { CommentItem, PostItem } from '../../type';
 import { CommentService } from 'src/service/comment/comment.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { ConfirmLeaveDialogComponent } from '../confirm-leave-dialog/confirm-leave-dialog.component';
+import { ConfirmLeaveDialogComponent } from '../../dialog/confirm-leave-dialog/confirm-leave-dialog.component';
 import { Observable } from 'rxjs';
 
 @Component({

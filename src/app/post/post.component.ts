@@ -13,13 +13,15 @@ export class PostComponent implements OnInit {
   pageIndex: number = 0;
   prevPageIndex: number = 0;
   loadingStatus: number = 1;
+  totalItem!: number;
 
   constructor(private postService: PostService) {}
 
   ngOnInit(): void {
     this.postService.getPostPaging(this.pageIndex).subscribe((posts) => {
-      this.posts = [...posts];
+      this.posts = [...posts.body!];
       this.loadingStatus = 0;
+      this.totalItem = Number(posts.headers.get('X-Total-Count'));
     });
   }
 
@@ -27,8 +29,9 @@ export class PostComponent implements OnInit {
     this.pageIndex = $event.pageIndex;
     this.loadingStatus = 1;
     this.postService.getPostPaging(this.pageIndex).subscribe((posts) => {
-      this.posts = [...posts];
+      this.posts = [...posts.body!];
       this.loadingStatus = 0;
+      this.totalItem = Number(posts.headers.get('X-Total-Count'));
     });
   };
 }
