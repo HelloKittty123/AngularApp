@@ -39,6 +39,7 @@ export class UserUpdateDialogComponent implements OnInit {
 
   onSubmit(): void {
     this.dialogRef.close({
+      id: this.data?.id,
       name: this.updateUserForm.value.name,
       username: this.updateUserForm.value.username,
       email: this.updateUserForm.value.email,

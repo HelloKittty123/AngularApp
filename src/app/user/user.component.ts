@@ -49,6 +49,8 @@ export class UserComponent implements OnInit {
       data: user,
     });
     dialogRef.afterClosed().subscribe((result) => {
+      console.log(result);
+
       if (result) {
         this.loadingStatus = 1;
         if (result.isCreate) {
