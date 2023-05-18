@@ -73,3 +73,9 @@ export interface Tile {
   rows: number;
   text: string;
 }
+
+export enum Error {
+  None,
+  Required,
+  Invalid,
+}

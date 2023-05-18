@@ -12,6 +12,20 @@
         <mat-label>Login</mat-label>
         <input matInput formControlName="email" email />
       </mat-form-field>
+      <div
+        style="color: red; padding-bottom: 10px"
+        *ngIf="
+          loginForm.controls['email']?.touched &&
+          loginForm.controls['email']?.errors
+        "
+      >
+        Email is
+        {{
+          loginForm.controls["email"].errors!["required"]
+            ? "required"
+            : "invalid"
+        }}
+      </div>
       <mat-form-field appearance="fill" class="login-form-input">
         <mat-label>Password</mat-label>
         <input
@@ -30,6 +44,15 @@
           <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
         </button>
       </mat-form-field>
+      <div
+        style="color: red; padding-bottom: 10px"
+        *ngIf="
+          loginForm.controls['password']?.touched &&
+          loginForm.controls['password']?.errors
+        "
+      >
+        Email is required
+      </div>
     </div>
     <div class="login-form-button">
       <button
@@ -37,6 +60,7 @@
         mat-raised-button
         color="primary"
         style="width: 100%; height: 50px; margin-top: 20px"
+        [disabled]="loginForm.invalid"
       >
         LOGIN
       </button>
