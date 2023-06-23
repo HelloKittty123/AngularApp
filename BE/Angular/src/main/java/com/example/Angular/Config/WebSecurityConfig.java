@@ -1,38 +1,31 @@
 package com.example.Angular.Config;
 
-import com.example.Angular.CustomFilter.JWTAuthenticationFilter;
-import com.example.Angular.CustomFilter.JWTLoginFilter;
+import com.example.Angular.Ultity.Constant.Common;
+import com.example.Angular.Ultity.CustomFilter.JWTAuthenticationFilter;
+import com.example.Angular.Ultity.CustomFilter.JWTLoginFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import javax.sql.DataSource;
 
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    private static final String[] AUTH_WHITELIST = {
-            // -- Swagger UI v2
-            "/v2/api-docs",
-            "/swagger-resources",
-            "/swagger-resources/**",
-            "/configuration/ui",
-            "/configuration/security",
-            "/swagger-ui.html",
-            "/webjars/**",
-            // -- Swagger UI v3 (OpenAPI)
-            "/v3/api-docs/**",
-            "/swagger-ui/**"
-            // other public endpoints of your API may be appended to this array
-    };
+    @Autowired
+    DataSource dataSource;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable().authorizeRequests()
-                .antMatchers(AUTH_WHITELIST).permitAll()
+                .antMatchers(Common.Swagger).permitAll()
                 .antMatchers( HttpMethod.POST,"/login").permitAll() // Request dạng POST tới "/login" luôn được phép truy cập dù là đã authenticated hay chưa
                 .anyRequest().authenticated() // Các request còn lại đều cần được authenticated
                 .and()
@@ -44,13 +37,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication().withUser("admin").password("{noop}password").roles("ADMIN");
-       /*
-       // Mình comment phần dưới này vì chúng ta ko sử dụng DB nhé. Nếu các bạn sử dụng, bỏ comment và config query sao cho phù hợp. Các bạn có thể GG để tìm hiểu thêm
-       auth.jdbcAuthentication().dataSource(dataSource)
-               .usersByUsernameQuery("select username,password, enabled from users where username=?")
-               .authoritiesByUsernameQuery("select username, role from user_roles where username=?");
-       */
+        // use memory
+        // auth.inMemoryAuthentication().withUser("admin").password("{noop}password").roles("ADMIN");
+
+        auth.jdbcAuthentication().dataSource(dataSource)
+               .usersByUsernameQuery("select username, password, enabled from users where username = ?")
+               .authoritiesByUsernameQuery("select username, role from users where username = ?")
+                .passwordEncoder(new BCryptPasswordEncoder());
+
     }
 
 

@@ -5,50 +5,29 @@
     <changeSet id="createUserTable" author="trungtd18">
         <preConditions onFail="WARN">
             <not>
-                <tableExists tableName="user"/>
+                <tableExists tableName="users"/>
             </not>
         </preConditions>
-        <createTable tableName="user">
+        <createTable tableName="users">
             <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="username" type="varchar(50)">
                 <constraints nullable="false"/>
             </column>
+            <column name="password" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
             <column name="email" type="varchar(100)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="street" type="text">
-                <constraints nullable="false"/>
-            </column>
-            <column name="suite" type="varchar(50)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="zipcode" type="varchar(50)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="lat" type="varchar(50)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="lng" type="varchar(50)">
                 <constraints nullable="false"/>
             </column>
             <column name="phone" type="varchar(11)">
                 <constraints nullable="false"/>
             </column>
-            <column name="website" type="text">
+            <column name="role" type="varchar(45)">
                 <constraints nullable="false"/>
             </column>
-            <column name="companyName" type="varchar(50)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="catchPhrase" type="text">
-                <constraints nullable="false"/>
-            </column>
-            <column name="bs" type="text">
-                <constraints nullable="false"/>
-            </column>
-            <column name="role" type="int">
+            <column name="enabled" type="boolean">
                 <constraints nullable="false"/>
             </column>
         </createTable>
