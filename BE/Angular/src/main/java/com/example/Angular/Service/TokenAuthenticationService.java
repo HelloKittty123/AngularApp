@@ -19,7 +19,7 @@ public class TokenAuthenticationService {
     static final String TOKEN_PREFIX = "Bearer";
     static final String HEADER_STRING = "Authorization";
 
-    public static void addAuthentication(HttpServletResponse res, String username) {
+    public static String addAuthentication(HttpServletResponse res, String username) {
         String JWT = Jwts.builder()
                 .setSubject(username)
                 .claim(Common.Claims.USER_NAME, username)
@@ -29,15 +29,19 @@ public class TokenAuthenticationService {
         Cookie cookie = new Cookie("access_token", JWT);
         cookie.setMaxAge(60*60);
         res.addCookie(cookie);
+        return JWT;
     }
 
     private static String getAccessToken(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
-        for (Cookie cookie : cookies) {
-            if(cookie.getName().equals(Common.ACCESS_TOKEN)) {
-                return cookie.getValue();
+        if(cookies != null) {
+            for (Cookie cookie : cookies) {
+                if(cookie.getName().equals(Common.ACCESS_TOKEN)) {
+                    return cookie.getValue();
+                }
             }
         }
+
         return null;
     }
 

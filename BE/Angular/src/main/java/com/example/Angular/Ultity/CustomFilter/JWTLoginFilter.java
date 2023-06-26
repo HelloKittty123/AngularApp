@@ -23,9 +23,9 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
     }
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
-        AccountCredentials credentials = new AccountCredentials(request.getParameter("username"), request.getParameter("password"));
+        AccountCredentials credentials = new AccountCredentials(request.getParameter("email"), request.getParameter("password"));
         return getAuthenticationManager().authenticate(
-                new UsernamePasswordAuthenticationToken(
+                    new UsernamePasswordAuthenticationToken(
                         credentials.getUsername(),
                         credentials.getPassword(),
                         Collections.emptyList()
